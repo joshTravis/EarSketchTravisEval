@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_earsketchtraviseval" default="compile.module.earsketchtraviseval">
+  <dirname property="module.earsketchtraviseval.basedir" file="${ant.file.module_earsketchtraviseval}"/>
+  
+  <property name="module.jdk.home.earsketchtraviseval" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.earsketchtraviseval" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.earsketchtraviseval" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.earsketchtraviseval" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="earsketchtraviseval.output.dir" value="${module.earsketchtraviseval.basedir}/out/production/EarSketchTravisEval"/>
+  <property name="earsketchtraviseval.testoutput.dir" value="${module.earsketchtraviseval.basedir}/out/test/EarSketchTravisEval"/>
+  
+  <path id="earsketchtraviseval.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="earsketchtraviseval.module.production.classpath">
+    <path refid="${module.jdk.classpath.earsketchtraviseval}"/>
+  </path>
+  
+  <path id="earsketchtraviseval.runtime.production.module.classpath">
+    <pathelement location="${earsketchtraviseval.output.dir}"/>
+  </path>
+  
+  <path id="earsketchtraviseval.module.classpath">
+    <path refid="${module.jdk.classpath.earsketchtraviseval}"/>
+    <pathelement location="${earsketchtraviseval.output.dir}"/>
+  </path>
+  
+  <path id="earsketchtraviseval.runtime.module.classpath">
+    <pathelement location="${earsketchtraviseval.testoutput.dir}"/>
+    <pathelement location="${earsketchtraviseval.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.earsketchtraviseval">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.earsketchtraviseval">
+    <patternset refid="excluded.from.module.earsketchtraviseval"/>
+  </patternset>
+  
+  <path id="earsketchtraviseval.module.sourcepath">
+    <dirset dir="${module.earsketchtraviseval.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.earsketchtraviseval" depends="compile.module.earsketchtraviseval.production,compile.module.earsketchtraviseval.tests" description="Compile module EarSketchTravisEval"/>
+  
+  <target name="compile.module.earsketchtraviseval.production" depends="register.custom.compilers" description="Compile module EarSketchTravisEval; production classes">
+    <mkdir dir="${earsketchtraviseval.output.dir}"/>
+    <javac2 destdir="${earsketchtraviseval.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.earsketchtraviseval}/javac">
+      <compilerarg line="${compiler.args.earsketchtraviseval}"/>
+      <bootclasspath refid="earsketchtraviseval.module.bootclasspath"/>
+      <classpath refid="earsketchtraviseval.module.production.classpath"/>
+      <src refid="earsketchtraviseval.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.earsketchtraviseval"/>
+    </javac2>
+    
+    <copy todir="${earsketchtraviseval.output.dir}">
+      <fileset dir="${module.earsketchtraviseval.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.earsketchtraviseval.tests" depends="register.custom.compilers,compile.module.earsketchtraviseval.production" description="compile module EarSketchTravisEval; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.earsketchtraviseval" description="cleanup module">
+    <delete dir="${earsketchtraviseval.output.dir}"/>
+    <delete dir="${earsketchtraviseval.testoutput.dir}"/>
+  </target>
+</project>
